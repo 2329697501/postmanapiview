@@ -4,7 +4,7 @@
  * postman api网页查看器
  */
 
-$config = 'F:/zhongwy/apidocs';// postman导出的接口文件或者接口文件所在目录
+$config = __DIR__; // postman导出的接口文件或者接口文件所在目录
 
 $api    = [];
 $detail = [];
@@ -89,32 +89,9 @@ function dis_item_api($item, &$j = 1001)
             echo '<h5 class="textshadow">接口描述</h5>';
             echo '<p class="markdown-show">' . (isset($element['request']['description']) ? $element['request']['description'] : '') . '</p>';
             echo '</div>';
-            echo '<div style="background:#ffffff;padding:20px;">';
-            echo '<h5 class="textshadow" >请求参数</h5>';
-            echo '<table class="table">';
-            echo '<thead>';
-            echo '<tr>';
-            echo '<th class="col-md-3">参数标识</th>';
-            echo '<th class="col-md-2">参数值</th>';
-            echo '<th class="col-md-5">描述</th>';
-            echo '</tr>';
-            echo '</thead>';
-            echo '<tbody>';
             if (isset($element['request']['url']['query'])) {
-                foreach ($element['request']['url']['query'] as $q) {
-                    echo '<tr>';
-                    echo '<td>' . (isset($q['key']) ? $q['key'] : '') . '</td>';
-                    echo '<td>' . (isset($q['value']) ? $q['value'] : '') . '</td>';
-                    echo '<td>' . (isset($q['description']) ? $q['description'] : '') . '</td>';
-                    echo '</tr>';
-                }
-            }
-            echo '</tbody>';
-            echo '</table>';
-            echo '</div>';
-            if (!empty(isset($element['request']['header'])) && $element['request']['header']) {
                 echo '<div style="background:#ffffff;padding:20px;">';
-                echo '<h5 class="textshadow"  style="color:red;">请求头</h5>';
+                echo '<h5 class="textshadow" ><kbd style="color:red;">链接参数</kbd></h5>';
                 echo '<table class="table">';
                 echo '<thead>';
                 echo '<tr>';
@@ -124,56 +101,111 @@ function dis_item_api($item, &$j = 1001)
                 echo '</tr>';
                 echo '</thead>';
                 echo '<tbody>';
-                if (isset($element['request']['header'])) {
-                    foreach ($element['request']['header'] as $q) {
-                        echo '<tr>';
-                        echo '<td>' . (isset($q['key']) ? $q['key'] : '') . '</td>';
-                        echo '<td>' . (isset($q['value']) ? $q['value'] : '') . '</td>';
-                        echo '<td>' . (isset($q['description']) ? $q['description'] : '') . '</td>';
-                        echo '</tr>';
-                    }
+                foreach ($element['request']['url']['query'] as $q) {
+                    echo '<tr>';
+                    echo '<td>' . (isset($q['key']) ? $q['key'] : '') . '</td>';
+                    echo '<td>' . (isset($q['value']) ? $q['value'] : '') . '</td>';
+                    echo '<td>' . (isset($q['description']) ? $q['description'] : '') . '</td>';
+                    echo '</tr>';
                 }
                 echo '</tbody>';
                 echo '</table>';
                 echo '</div>';
             }
-            if (!empty(isset($element['request']['body'])) && $element['request']['body']) {
+            if (!empty(isset($element['request']['auth'])) && isset($element['request']['auth'][$element['request']['auth']['type']])) {
                 echo '<div style="background:#ffffff;padding:20px;">';
-                echo '<h5 class="textshadow"  style="color:red;">请求内容（格式：' . $element['request']['body']['mode'] . '）</h5>';
-                if ($element['request']['body']['mode'] == 'formdata') {
+                echo '<h5 class="textshadow"  style="color:red;"><kbd style="color:red;">授权类型 - ' . $element['request']['auth']['type'] . '</kbd></h5>';
+                echo '<table class="table">';
+                echo '<thead>';
+                echo '<tr>';
+                echo '<th class="col-md-3">参数标识</th>';
+                echo '<th class="col-md-2">参数值</th>';
+                echo '<th class="col-md-5">类型</th>';
+                echo '</tr>';
+                echo '</thead>';
+                echo '<tbody>';
+                foreach ($element['request']['auth'][$element['request']['auth']['type']] as $q) {
+                    echo '<tr>';
+                    echo '<td>' . (isset($q['key']) ? $q['key'] : '') . '</td>';
+                    echo '<td style="word-break: break-all;">' . (isset($q['value']) ? $q['value'] : '') . '</td>';
+                    echo '<td>' . (isset($q['type']) ? $q['type'] : '') . '</td>';
+                    echo '</tr>';
+                }
+                echo '</tbody>';
+                echo '</table>';
+                echo '</div>';
+            }
+            if (!empty(isset($element['request']['header'])) && $element['request']['header']) {
+                echo '<div style="background:#ffffff;padding:20px;">';
+                echo '<h5 class="textshadow"  style="color:red;"><kbd style="color:red;">请求头</kbd></h5>';
+                echo '<table class="table">';
+                echo '<thead>';
+                echo '<tr>';
+                echo '<th class="col-md-3">参数标识</th>';
+                echo '<th class="col-md-2">参数值</th>';
+                echo '<th class="col-md-5">类型</th>';
+                echo '</tr>';
+                echo '</thead>';
+                echo '<tbody>';
+                foreach ($element['request']['header'] as $q) {
+                    echo '<tr>';
+                    echo '<td>' . (isset($q['key']) ? $q['key'] : '') . '</td>';
+                    echo '<td style="word-break: break-all;">' . (isset($q['value']) ? $q['value'] : '') . '</td>';
+                    echo '<td>' . (isset($q['type']) ? $q['type'] : '') . '</td>';
+                    echo '</tr>';
+                }
+                echo '</tbody>';
+                echo '</table>';
+                echo '</div>';
+            }
+            if (!empty(isset($element['request']['body'])) && isset($element['request']['body'][$element['request']['body']['mode']])) {
+                echo '<div style="background:#ffffff;padding:20px;">';
+                echo '<h5 class="textshadow"  style="color:red;"><kbd style="color:red;">请求内容（格式 - ' . $element['request']['body']['mode'] . ')</kbd></h5>';
+                if (is_array($element['request']['body'][$element['request']['body']['mode']])) {
                     echo '<table class="table">';
                     echo '<thead>';
                     echo '<tr>';
                     echo '<th class="col-md-3">参数标识</th>';
                     echo '<th class="col-md-2">参数值</th>';
+                    echo '<th class="col-md-5">类型</th>';
                     echo '<th class="col-md-5">描述</th>';
                     echo '</tr>';
                     echo '</thead>';
                     echo '<tbody>';
-                    if (isset($element['request']['body']['formdata'])) {
-                        foreach ($element['request']['body']['formdata'] as $q) {
-                            echo '<tr>';
-                            echo '<td>' . (isset($q['key']) ? $q['key'] : '') . '</td>';
-                            echo '<td>' . (isset($q['value']) ? $q['value'] : '') . '</td>';
-                            echo '<td>' . (isset($q['description']) ? $q['description'] : '') . '</td>';
-                            echo '</tr>';
-                        }
+                    foreach ($element['request']['body'][$element['request']['body']['mode']] as $q) {
+                        echo '<tr>';
+                        echo '<td>' . (isset($q['key']) ? $q['key'] : '') . '</td>';
+                        echo '<td>' . (isset($q['value']) ? $q['value'] : '') . '</td>';
+                        echo '<td>' . (isset($q['type']) ? $q['type'] : '') . '</td>';
+                        echo '<td>' . (isset($q['description']) ? $q['description'] : '') . '</td>';
+                        echo '</tr>';
                     }
                     echo '</tbody>';
                     echo '</table>';
                 } else {
-                    echo $element['request']['body']['raw'];
+                    echo $element['request']['body'][$element['request']['body']['mode']];
                 }
                 echo '</div>';
             }
             foreach ($element['response'] as $rk => $r) {
                 echo '<div class="response" style="background:#ffffff;padding:20px;">';
-                echo '<h5 class="textshadow" >示例' . ($rk + 1) . '：' . $r['name'] . ' - ' . $r['originalRequest']['url']['raw'] . '</h5>';
-                // echo '<p class="response_dis" style="display: none;">'.json_encode(json_decode($r['body'],true),true).'</p>';
-                echo '<pre style="background:honeydew" class="response_out">';
-                $temm = json_decode($r['body'], true);
-                print_r($temm);
+                echo '<h5 class="textshadow" ><kbd style="color:red;">示例' . ($rk + 1) . '：' . $r['name'] . '  响应状态 - ' . $r['code'] . '  ' . $r['status'] . '</kbd></h5>';
+
+                echo '<div class="row">';
+                echo '<div class="col-md-6">';
+                echo '<pre style="background:honeydew">请求内容</pre>';
+                echo '<pre style="background:honeydew">';
+                print_r($r['originalRequest']);
                 echo '</pre>';
+                echo '</div>';
+                echo '<div class="col-md-6">';
+                echo '<pre style="background:honeydew">响应内容</pre>';
+                echo '<pre style="background:honeydew">';
+                print_r($r['body']);
+                echo '</pre>';
+                echo '</div>';
+                echo '</div>';
+
                 echo '</div>';
             }
             echo '</div>';
@@ -278,10 +310,10 @@ function dis_item_api($item, &$j = 1001)
                     <!--info start-->
                     <div style="font-size:18px;">
                         <div class="info" style="font-size:14px;">
-                            <span style="font-size:16px;">欢迎使用POSTMAN接口管理工具 v1.0.0版</span>
+                            <span style="font-size:16px;">欢迎使用POSTMAN-API接口查看工具 v1.0.0版</span>
                             <br>
                                <pre class="info" style="margin:10px 34px 10px 34px">
-            什么是接口文档管理工具?
+            什么是POSTMAN-API接口查看工具?
                 是一个在线API文档查看系统；其致力于使用POSTMAN进行接口文档的编写、维护和测试结果的可视化，减少团队协作开发的沟通成本。
                                 </pre>
                             </br>
