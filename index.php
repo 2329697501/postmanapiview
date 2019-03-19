@@ -89,7 +89,7 @@ function dis_item_api($item, &$j = 1001)
             echo '<h5 class="textshadow">接口描述</h5>';
             echo '<p class="markdown-show">' . (isset($element['request']['description']) ? $element['request']['description'] : '') . '</p>';
             echo '</div>';
-            if (isset($element['request']['url']['query'])) {
+            if (!empty($element['request']['url']['query'])) {
                 echo '<div style="background:#ffffff;padding:20px;">';
                 echo '<h5 class="textshadow" ><kbd style="color:red;">链接参数</kbd></h5>';
                 echo '<table class="table">';
@@ -112,7 +112,7 @@ function dis_item_api($item, &$j = 1001)
                 echo '</table>';
                 echo '</div>';
             }
-            if (isset($element['request']['auth']) && isset($element['request']['auth'][$element['request']['auth']['type']])) {
+            if (!empty($element['request']['auth']) && isset($element['request']['auth'][$element['request']['auth']['type']])) {
                 echo '<div style="background:#ffffff;padding:20px;">';
                 echo '<h5 class="textshadow"  style="color:red;"><kbd style="color:red;">授权类型 - ' . $element['request']['auth']['type'] . '</kbd></h5>';
                 echo '<table class="table">';
@@ -135,7 +135,7 @@ function dis_item_api($item, &$j = 1001)
                 echo '</table>';
                 echo '</div>';
             }
-            if (isset($element['request']['header']) && $element['request']['header']) {
+            if (!empty($element['request']['header']) && $element['request']['header']) {
                 echo '<div style="background:#ffffff;padding:20px;">';
                 echo '<h5 class="textshadow"  style="color:red;"><kbd style="color:red;">请求头</kbd></h5>';
                 echo '<table class="table">';
@@ -158,7 +158,7 @@ function dis_item_api($item, &$j = 1001)
                 echo '</table>';
                 echo '</div>';
             }
-            if (isset($element['request']['body']) && isset($element['request']['body'][$element['request']['body']['mode']])) {
+            if (!empty($element['request']['body']) && isset($element['request']['body'][$element['request']['body']['mode']])) {
                 echo '<div style="background:#ffffff;padding:20px;">';
                 echo '<h5 class="textshadow"  style="color:red;"><kbd style="color:red;">请求内容（格式 - ' . $element['request']['body']['mode'] . ')</kbd></h5>';
                 if (is_array($element['request']['body'][$element['request']['body']['mode']])) {
@@ -189,7 +189,7 @@ function dis_item_api($item, &$j = 1001)
             }
             foreach ($element['response'] as $rk => $r) {
                 echo '<div class="response" style="background:#ffffff;padding:20px;">';
-                echo '<h5 class="textshadow" ><kbd style="color:red;">示例' . ($rk + 1) . '：' . $r['name'] . '  响应状态 - ' . $r['code'] . '  ' . $r['status'] . '</kbd></h5>';
+                echo '<h5 class="textshadow" ><kbd style="color:red;">示例' . ($rk + 1) . '：' . $r['name'] . '  响应状态 - ' . (isset($r['code'])?$r['code']:'') . '  ' . (isset($r['status'])?$r['status']:'') . '</kbd></h5>';
 
                 echo '<div class="row">';
                 echo '<div class="col-md-6">';
