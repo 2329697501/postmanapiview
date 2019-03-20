@@ -87,7 +87,7 @@ function dis_item_api($item, &$j = 1001)
             echo '</div>';
             echo '<div style="background:honeydew;padding:20px;">';
             echo '<h5 class="textshadow">接口描述</h5>';
-            echo '<p class="markdown-show">' . (isset($element['request']['description']) ? $element['request']['description'] : '') . '</p>';
+            echo '<pre><p class="markdown-show">' . (isset($element['request']['description']) ? $element['request']['description'] : '') . '</p></pre>';
             echo '</div>';
             if (!empty($element['request']['url']['query'])) {
                 echo '<div style="background:#ffffff;padding:20px;">';
