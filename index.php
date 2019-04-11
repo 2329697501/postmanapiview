@@ -6,8 +6,8 @@
 
 $config = __DIR__; // postman导出的接口文件或者接口文件所在目录
 
-$api    = [];
-$detail = [];
+$api    = array();
+$detail = array();
 
 if (is_file($config)) {
     $content = json_decode(file_get_contents($config), true);
@@ -35,7 +35,7 @@ $show_detail = false;
 $_postman_id = isset($_GET['_postman_id']) ? $_GET['_postman_id'] : false;
 if ($_postman_id) {
     $show_detail = true;
-    $detail      = isset($api[$_postman_id]) ? $api[$_postman_id] : [];
+    $detail      = isset($api[$_postman_id]) ? $api[$_postman_id] : array();
 }
 /**
  * 递归输出接口列表
