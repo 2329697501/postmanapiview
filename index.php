@@ -4,7 +4,21 @@
  * postman api网页查看器
  */
 
+$users = array(
+    // 'test' => 'test',
+); // base auth 用户
 $config = __DIR__; // postman导出的接口文件或者接口文件所在目录
+
+if (!empty($users)) {
+    $user = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
+    $pass = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '';
+    if (!isset($users[$user]) || $users[$user] != $pass) {
+        http_response_code(401);
+        header('WWW-Authenticate:Basic realm="postmanapiview"'); //baseauth授权对话框
+        echo ('需要用户名和密码才能继续访问');
+        exit;
+    }
+}
 
 $api    = array();
 $detail = array();
@@ -189,7 +203,7 @@ function dis_item_api($item, &$j = 1001)
             }
             foreach ($element['response'] as $rk => $r) {
                 echo '<div class="response" style="background:#ffffff;padding:20px;">';
-                echo '<h5 class="textshadow" ><kbd style="color:red;">示例' . ($rk + 1) . '：' . $r['name'] . '  响应状态 - ' . (isset($r['code'])?$r['code']:'') . '  ' . (isset($r['status'])?$r['status']:'') . '</kbd></h5>';
+                echo '<h5 class="textshadow" ><kbd style="color:red;">示例' . ($rk + 1) . '：' . $r['name'] . '  响应状态 - ' . (isset($r['code']) ? $r['code'] : '') . '  ' . (isset($r['status']) ? $r['status'] : '') . '</kbd></h5>';
 
                 echo '<div class="row">';
                 echo '<div class="col-md-6">';
