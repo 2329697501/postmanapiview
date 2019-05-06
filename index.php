@@ -215,7 +215,7 @@ function dis_item_api($item, &$j = 1001)
                 echo '<div class="col-md-6">';
                 echo '<pre style="background:honeydew">响应内容</pre>';
                 echo '<pre style="background:honeydew">';
-                print_r($r['body']);
+                print_r(json_encode(json_decode($r['body'], true), 320));
                 echo '</pre>';
                 echo '</div>';
                 echo '</div>';
