@@ -303,6 +303,31 @@ function dis_item_api($item, &$j = 1001)
                     <pre>
                         <?php echo isset($detail['info']['description']) ? $detail['info']['description'] : ''; ?>
                     </pre>
+
+                    <?php 
+                    if(isset($detail['variable']) && $detail['variable']){
+                        echo '<pre><div style="background:#ffffff;padding:20px;">';
+                        echo '<h5 class="textshadow"  style="color:red;"><kbd style="color:red;">POSTMAN变量</kbd></h5>';
+                        echo '<table class="table">';
+                        echo '<thead>';
+                        echo '<tr>';
+                        echo '<th class="col-md-3">变量标识</th>';
+                        echo '<th class="col-md-2">变量值</th>';
+                        echo '</tr>';
+                        echo '</thead>';
+                        echo '<tbody>';
+                        foreach ($detail['variable'] as $k=>$v) {
+                            echo '<tr>';
+                            echo '<td>' . (isset($v['key']) ? $v['key'] : '') . '</td>';
+                            echo '<td>' . (isset($v['value']) ? $v['value'] : '') . '</td>';
+                            echo '</tr>';
+                        }
+                        echo '</tbody>';
+                        echo '</table>';
+                        echo '</div></pre>';
+                    }
+                    ?>
+
                 </div>
                 <!--顶部导航end-->
                 <!--主窗口start-->
